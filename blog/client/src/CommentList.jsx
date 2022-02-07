@@ -4,11 +4,16 @@ import axios from 'axios';
 export const CommentList = ({ postId }) => {
     const [comments, getComments] = useState([]);
 
-    const fetchComments = async () => {
-        const res = await axios.get(`http://localhost:8081/posts/${postId}/comments`);
-
-        getComments(res.data);
-    };
+    useEffect((postId) => {
+        const fetchComments = async () => {
+            const res = await axios.get(`http://localhost:8081/posts/${postId}/comments`);
+    
+            getComments(res.data);
+        };
+        
+        fetchComments();
+    }, [comments]); 
+    
 
     const renderComments = comments.map(comment => {
         return (
@@ -17,10 +22,6 @@ export const CommentList = ({ postId }) => {
             </li>
         );
     });
-
-    useEffect(() => {
-        fetchComments();
-    }, []);
 
     return (
         <div className="d-flex flex-row flex-wrap justify-content-between">

@@ -6,11 +6,14 @@ import { CommentList } from './CommentList';
 export const PostList = () => {
     const [posts, getPosts] = useState({});
 
-    const fetchPosts = async () => {
-        const res = await axios.get('http://localhost:8080/posts');
+    useEffect(() => {
+        const fetchPosts = async () => {
+            const res = await axios.get('http://localhost:8080/posts');
 
-        getPosts(res.data);
-    };
+            getPosts(res.data);
+        };
+        fetchPosts();
+    }, [posts]);
 
     const renderPosts = Object.values(posts).map(post => {
         return (
@@ -25,10 +28,6 @@ export const PostList = () => {
             </div>
         );
     });
-
-    useEffect(() => {
-        fetchPosts();
-    }, []);
 
     return (
         <div className="d-flex flex-row flex-wrap justify-content-between">
